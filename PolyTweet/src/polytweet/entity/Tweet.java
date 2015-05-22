@@ -9,12 +9,12 @@ import java.util.Date;
 public class Tweet {
 
     private final UserInfo author;
-    private String msg;
+    private String tweet;
     private final Date creationTime;
 
-    public Tweet(UserInfo author, String msg) {
+    public Tweet(UserInfo author, String tweet) {
         this.author = author;
-        this.msg = msg;
+        this.tweet = tweet;
         this.creationTime = new Date();
     }
 
@@ -22,15 +22,16 @@ public class Tweet {
         return author;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getTweet() {
+        return tweet;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setTweet(String msg) {
+        this.tweet = msg;
     }
 
     public Date getCreationTime() {
         return creationTime;
     }
+
 }
