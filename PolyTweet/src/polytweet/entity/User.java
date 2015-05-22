@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tweet;
+package polytweet.entity;
 
 /**
  *
  * @author Thomas
  */
-public class Tweet {
-    
+public class User {
+
 }
