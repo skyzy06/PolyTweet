@@ -87,7 +87,6 @@ public class PolyClient implements MessageListener {
     }
 
     private boolean postMessage(String author, String message, String destinationName) {
-        session.c
         try {
             MapMessage newMessage = session.createMapMessage();
             newMessage.setString("Author", author);
