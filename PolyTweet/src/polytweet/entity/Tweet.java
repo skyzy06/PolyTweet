@@ -1,37 +1,25 @@
 package polytweet.entity;
 
-import java.util.Date;
-
 /**
  *
  * @author Thomas
  */
 public class Tweet {
 
-    private final UserInfo author;
-    private String tweet;
-    private final Date creationTime;
+    private final String author;
+    private final String content;
 
-    public Tweet(UserInfo author, String tweet) {
+    public Tweet(String author, String content) {
         this.author = author;
-        this.tweet = tweet;
-        this.creationTime = new Date();
+        this.content = content;
     }
 
-    public UserInfo getAuthor() {
+    public String getAuthor() {
         return author;
     }
 
-    public String getTweet() {
-        return tweet;
-    }
-
-    public void setTweet(String msg) {
-        this.tweet = msg;
-    }
-
-    public Date getCreationTime() {
-        return creationTime;
+    public String getContent() {
+        return content;
     }
 
 }

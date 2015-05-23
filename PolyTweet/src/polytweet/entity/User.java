@@ -8,8 +8,6 @@ package polytweet.entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.jms.JMSException;
-import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 
@@ -19,17 +17,24 @@ import javax.jms.MessageListener;
  */
 public class User implements Serializable, MessageListener {
 
-    private UserInfo userInfo = null;
+    private String pseudo = "";
+
+    private String password = "";
 
     private List<Hashtag> listHashtag = null;
 
-    public User(String pseudo, String firstname, String lastname, String password) {
-        this.userInfo = new UserInfo(pseudo, firstname, lastname, password);
+    public User(String pseudo, String password) {
+        this.pseudo = pseudo;
+        this.password = password;
         this.listHashtag = new ArrayList<>();
     }
 
-    public UserInfo getUserInfo() {
-        return userInfo;
+    public String getPseudo() {
+        return pseudo;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public List<Hashtag> getListHashtag() {
@@ -37,13 +42,7 @@ public class User implements Serializable, MessageListener {
     }
 
     public boolean isFollowing(String hashtag) {
-        boolean result = false;
-        for (Hashtag h : listHashtag) {
-            if (h.getName().equals(hashtag)) {
-                result = true;
-            }
-        }
-        return result;
+        return listHashtag.stream().anyMatch((h) -> (h.getName().equals(hashtag)));
     }
 
     public void followNewHashtag(Hashtag hashtag) {
@@ -57,10 +56,7 @@ public class User implements Serializable, MessageListener {
     public void onMessage(Message message) {
         if (message instanceof Tweet) {
             Tweet tweet = (Tweet) message;
-            UserInfo author = tweet.getAuthor();
-            System.out.print("Nouveau tweet de ");
-            System.out.print(author.getFirstName() + " " + author.getLastName() + " (@" + author.getPseudo() + ") : ");
-            System.out.println(tweet.getTweet());
+            System.out.println("Nouveau tweet de @" + tweet.getAuthor() + " : " + tweet.getContent());
         } else {
             System.err.println("Ceci n'est pas un tweet !");
         }

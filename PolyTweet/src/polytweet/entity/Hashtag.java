@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 public class Hashtag implements Serializable {
 
-    private String name;
+    private final String name;
 
     public Hashtag(String name) {
         this.name = name;
