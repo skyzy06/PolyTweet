@@ -16,7 +16,6 @@ import javax.jms.Topic;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.ws.rs.client.Client;
 import polytweet.entity.Hashtag;
 import polytweet.interfaces.PolyInterface;
 import polytweet.entity.User;
@@ -64,7 +63,7 @@ public class PolyClient implements MessageListener {
             System.out.println("*** Account creation and login tests ***");
             System.out.println(inferace.createAccount("Skyzy", "Thomas", "Clop", "polytweet"));
             User u = inferace.login("Skyzy", "polytweet");
-            
+
             System.out.println("*** Hashtags creation tests ***");
             System.out.println(inferace.createHashtag("baude"));
             System.out.println(inferace.createHashtag("baude"));
