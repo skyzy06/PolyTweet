@@ -17,6 +17,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import polytweet.entity.Hashtag;
+import polytweet.entity.Tweet;
 import polytweet.interfaces.PolyInterface;
 import polytweet.entity.User;
 
@@ -59,9 +60,9 @@ public class PolyClient implements MessageListener {
         try {
             Registry r = LocateRegistry.getRegistry(hostname, port);
             System.out.println(r);
-            inferace = (PolyInterface) r.lookup("twitter");
+            inferace = (PolyInterface) r.lookup("polytweet");
             System.out.println("*** Account creation and login tests ***");
-            System.out.println(inferace.createAccount("Skyzy", "Thomas", "Clop", "polytweet"));
+            System.out.println(inferace.createAccount("Skyzy", "polytweet"));
             User u = inferace.login("Skyzy", "polytweet");
 
             System.out.println("*** Hashtags creation tests ***");
@@ -75,10 +76,10 @@ public class PolyClient implements MessageListener {
             }
 
             for (int i = 0; i < 3; i++) {
-                postMessage(u.getUserInfo().getPseudo(), "un tweet", "baude");
+                postMessage(u.getPseudo(), "un tweet", "baude");
                 Thread.sleep(1000);
             }
-            System.out.println(inferace.followHashtag("baude"));
+            System.out.println("Test follow : " + inferace.followHashtag("baude", "Skyzy"));
             System.out.println(inferace.login("Skyzy", "polytweet"));
         } catch (RemoteException | NotBoundException | NamingException | JMSException | InterruptedException e) {
             e.printStackTrace();
@@ -86,6 +87,7 @@ public class PolyClient implements MessageListener {
     }
 
     private boolean postMessage(String author, String message, String destinationName) {
+        session.c
         try {
             MapMessage newMessage = session.createMapMessage();
             newMessage.setString("Author", author);
