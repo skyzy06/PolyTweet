@@ -7,37 +7,31 @@ import java.io.Serializable;
  */
 public class UserInfo implements Serializable {
 
-    private String alias;
-    private String firstName;
-    private String lastName;
+    private final String pseudo;
+    private final String firstName;
+    private final String lastName;
+    private final String password;
 
-    public UserInfo(String alias, String firstName, String lastName) {
-        this.alias = alias;
+    public UserInfo(String pseudo, String firstName, String lastName, String password) {
+        this.pseudo = pseudo;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.password = password;
     }
 
-    public String getAlias() {
-        return this.alias;
+    public String getPseudo() {
+        return this.pseudo;
     }
 
-    public void setAlias(String alias) {
-        this.alias = alias;
+    public String getPassword() {
+        return password;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
     public String getLastName() {
         return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 }

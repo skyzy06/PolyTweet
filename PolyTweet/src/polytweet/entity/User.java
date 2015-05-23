@@ -5,67 +5,65 @@
  */
 package polytweet.entity;
 
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.MessageListener;
-import javax.jms.MessageProducer;
-import javax.jms.Queue;
-import javax.jms.Session;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 
 /**
  *
  * @author Thomas
  */
-public class User implements MessageListener {
+public class User implements Serializable, MessageListener {
 
-    private Connection connect = null;
-    private Session sendSession = null;
-    private Session receiveSession = null;
-    private MessageProducer sender = null;
-    private Queue queue = null;
-    public Context context = null;
+    private UserInfo userInfo = null;
 
-    public void writeMessage(String message) {
+    private List<Hashtag> listHashtag = null;
 
+    public User(String pseudo, String firstname, String lastname, String password) {
+        this.userInfo = new UserInfo(pseudo, firstname, lastname, password);
+        this.listHashtag = new ArrayList<>();
     }
 
-    public void refresh() {
-
+    public UserInfo getUserInfo() {
+        return userInfo;
     }
 
-    private void configurer() throws JMSException {
+    public List<Hashtag> getListHashtag() {
+        return listHashtag;
+    }
 
-        try {	// Create a connection
-
-            context = new InitialContext();
-            context.addToEnvironment(Context.INITIAL_CONTEXT_FACTORY, "org.apache.activemq.jndi.ActiveMQInitialContextFactory");
-            context.addToEnvironment(Context.PROVIDER_URL, "tcp://localhost:61616");
-
-            ConnectionFactory factory = (ConnectionFactory) context.lookup("ConnectionFactory");
-            connect = factory.createConnection();
-
-            connect.start(); // on peut activer la connection. 
-        } catch (JMSException | NamingException jmse) {
-            jmse.printStackTrace();
+    public boolean isFollowing(String hashtag) {
+        boolean result = false;
+        for (Hashtag h : listHashtag) {
+            if (h.getName().equals(hashtag)) {
+                result = true;
+            }
         }
+        return result;
+    }
+
+    public void followNewHashtag(Hashtag hashtag) {
+        if (isFollowing(hashtag.getName())) {
+            return;
+        }
+        listHashtag.add(hashtag);
     }
 
     @Override
     public void onMessage(Message message) {
-        // Methode permettant au souscripteur de consommer effectivement chaque msg recu
-        // via le topic auquel il a souscrit
-        try {
-            System.out.print("Recu un message du topic: " + ((Tweet) message).getTweet());
-            System.out.println(((MapMessage) message).getString("num"));
-        } catch (JMSException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        if (message instanceof Tweet) {
+            Tweet tweet = (Tweet) message;
+            UserInfo author = tweet.getAuthor();
+            System.out.print("Nouveau tweet de ");
+            System.out.print(author.getFirstName() + " " + author.getLastName() + " (@" + author.getPseudo() + ") : ");
+            System.out.println(tweet.getTweet());
+        } else {
+            System.err.println("Ceci n'est pas un tweet !");
         }
     }
+
 }
