@@ -47,11 +47,15 @@ public class PolyStub extends UnicastRemoteObject implements PolyInterface {
     @Override
     public User login(String pseudo, String password) throws RemoteException {
         for (User user : allUsers) {
-            if (user.getPseudo().equals(pseudo) && user.getPassword().equals(password)) {
-                return user;
+            if (user.getPseudo().equals(pseudo)) {
+                if (user.getPassword().equals(password)) {
+                    return user;
+                }
+                return null;
             }
         }
-        return null;
+        createAccount(pseudo, password);
+        return findUserByPseudo(pseudo);
     }
 
     @Override
