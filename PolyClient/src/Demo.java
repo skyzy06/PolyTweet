@@ -20,6 +20,7 @@ import javax.naming.NamingException;
 import polytweet.entity.Hashtag;
 import polytweet.entity.User;
 import polytweet.interfaces.PolyInterface;
+import java.util.List;
 
 /**
  *
@@ -109,6 +110,49 @@ public class Demo {
                 case 0:
                     System.out.println("Au revoir");
                     System.exit(0);
+                    break;
+                case 1 :
+                    String ht;
+                    //clean scanner
+                    ht= sc.nextLine();
+                    System.out.println("Donnez un nom d'hashtag");
+                    ht = sc.nextLine();
+                    
+                    try{
+                        inferace.createHashtag(ht);
+                    }
+                    catch(RemoteException e){
+                        e.printStackTrace();
+                    }
+                    break;
+                case 2 :
+                    //clean scanner
+                    ht= sc.nextLine();
+                    System.out.println("Donnez un nom d'hashtag");
+                    ht = sc.nextLine();
+                    try
+                    {
+                        inferace.followHashtag(ht, user.getPseudo());
+                    }catch(RemoteException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    break;
+                case 3 :
+                    try
+                    {
+                        List<Hashtag> result;
+                        result = inferace.listMyHashTag(user.getPseudo());
+                        for(Hashtag h : result)
+                        {
+                            System.out.println(h.getName());
+                        }
+                    }catch(RemoteException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    break;
+                
                 default:
                     System.out.println("Commande inconnue\n\n");
             }
