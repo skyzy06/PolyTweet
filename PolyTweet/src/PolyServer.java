@@ -1,7 +1,6 @@
 
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
+import java.rmi.*;
+import java.rmi.registry.*;
 import polytweet.interfaces.PolyInterface;
 import polytweet.stub.PolyStub;
 
@@ -14,6 +13,7 @@ public class PolyServer {
     public static void main(String[] args) {
         int port = 1099;
         String hostname = "localhost";
+
         if (args.length > 0) {
             port = Integer.valueOf(args[0]);
         }
@@ -26,8 +26,9 @@ public class PolyServer {
             PolyInterface stub = new PolyStub();
             reg.rebind("polytweet", stub);
         } catch (RemoteException e) {
+            System.err.println("Impossible de démarrer le serveur");
             e.printStackTrace();
         }
-        System.out.println("server Started.");
+        System.out.println("Twitter is in the cloud.");
     }
 }

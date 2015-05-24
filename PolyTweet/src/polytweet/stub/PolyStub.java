@@ -1,16 +1,10 @@
 package polytweet.stub;
 
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.List;
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
-import javax.jms.JMSException;
-import javax.jms.Session;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
+import java.rmi.*;
+import java.rmi.server.*;
+import java.util.*;
+import javax.jms.*;
+import javax.naming.*;
 import polytweet.entity.Hashtag;
 import polytweet.entity.User;
 import polytweet.interfaces.PolyInterface;
@@ -25,11 +19,10 @@ public class PolyStub extends UnicastRemoteObject implements PolyInterface {
     private List<User> allUsers;
     private Context context;
     private Connection connection;
-    private Session session;
 
     public PolyStub() throws RemoteException {
-        allhashtags = new ArrayList<Hashtag>();
-        allUsers = new ArrayList<User>();
+        allhashtags = new ArrayList<>();
+        allUsers = new ArrayList<>();
         try {
             context = new InitialContext();
             context.addToEnvironment(Context.INITIAL_CONTEXT_FACTORY, "org.apache.activemq.jndi.ActiveMQInitialContextFactory");
@@ -37,7 +30,7 @@ public class PolyStub extends UnicastRemoteObject implements PolyInterface {
 
             ConnectionFactory factory = (ConnectionFactory) context.lookup("ConnectionFactory");
             connection = factory.createConnection();
-            session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+            connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
             connection.start();
         } catch (JMSException | NamingException e) {
             e.printStackTrace();
@@ -45,12 +38,10 @@ public class PolyStub extends UnicastRemoteObject implements PolyInterface {
     }
 
     @Override
-    public boolean createAccount(String pseudo, String password) throws RemoteException {
+    public void createAccount(String pseudo, String password) throws RemoteException {
         if (!userAlreadyExist(pseudo)) {
             allUsers.add(new User(pseudo, password));
-            return true;
         }
-        return false;
     }
 
     @Override
@@ -64,23 +55,19 @@ public class PolyStub extends UnicastRemoteObject implements PolyInterface {
     }
 
     @Override
-    public boolean createHashtag(String hashtag) throws RemoteException {
+    public void createHashtag(String hashtag) throws RemoteException {
         if (!hashtagAlreadyExist(hashtag)) {
             allhashtags.add(new Hashtag(hashtag));
-            return true;
         }
-        return false;
     }
 
     @Override
-    public boolean followHashtag(String hastag, String pseudo) throws RemoteException {
+    public void followHashtag(String hastag, String pseudo) throws RemoteException {
         if (hashtagAlreadyExist(hastag) && userAlreadyExist(pseudo)) {
             Hashtag tag = findHashtagByName(hastag);
             User user = findUserByPseudo(pseudo);
             user.getListHashtag().add(tag);
-            return true;
         }
-        return false;
     }
 
     @Override

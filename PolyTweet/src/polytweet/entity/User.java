@@ -1,19 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package polytweet.entity;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.jms.JMSException;
-import javax.jms.MapMessage;
-import javax.jms.Message;
-import javax.jms.MessageListener;
+import java.io.*;
+import java.util.*;
+import javax.jms.*;
 
 /**
  *
@@ -59,11 +48,11 @@ public class User implements Serializable, MessageListener {
     @Override
     public void onMessage(Message message) {
         MapMessage tweet = (MapMessage) message;
-
         try {
             System.out.println("Nouveau tweet de @" + tweet.getString("pseudo") + " : " + tweet.getString("tweet"));
-        } catch (JMSException ex) {
-            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JMSException e) {
+            System.err.println("Je n'arrive pas à lire le tweet :(");
+            e.printStackTrace();
         }
 
     }
