@@ -8,6 +8,10 @@ package polytweet.entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.jms.JMSException;
+import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 
@@ -54,12 +58,14 @@ public class User implements Serializable, MessageListener {
 
     @Override
     public void onMessage(Message message) {
-        if (message instanceof Tweet) {
-            Tweet tweet = (Tweet) message;
-            System.out.println("Nouveau tweet de @" + tweet.getAuthor() + " : " + tweet.getContent());
-        } else {
-            System.err.println("Ceci n'est pas un tweet !");
+        MapMessage tweet = (MapMessage) message;
+
+        try {
+            System.out.println("Nouveau tweet de @" + tweet.getString("pseudo") + " : " + tweet.getString("tweet"));
+        } catch (JMSException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 
 }
