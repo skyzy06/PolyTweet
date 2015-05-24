@@ -38,7 +38,7 @@ public class Demo {
     private Connection connect = null;
     private Session session = null;
     private PolyInterface inferace = null;
-    public Context context = null;
+    public  Context context = null;
     
     private User user;
     
@@ -106,39 +106,44 @@ public class Demo {
         while (true) {
             printMenu();
             command = sc.nextInt();
+            String hashtagName;
             switch (command) {
                 case 0:
                     System.out.println("Au revoir");
                     System.exit(0);
                     break;
                 case 1 :
-                    String ht;
+                    //creer un hashtag
+                    
                     //clean scanner
-                    ht= sc.nextLine();
+                    hashtagName= sc.nextLine();
                     System.out.println("Donnez un nom d'hashtag");
-                    ht = sc.nextLine();
+                    hashtagName = sc.nextLine();
                     
                     try{
-                        inferace.createHashtag(ht);
+                        inferace.createHashtag(hashtagName);
                     }
                     catch(RemoteException e){
                         e.printStackTrace();
                     }
                     break;
                 case 2 :
-                    //clean scanner
-                    ht= sc.nextLine();
+                    //suivre un hashtag
+                    
+                    //clean console scanner
+                    hashtagName= sc.nextLine();
                     System.out.println("Donnez un nom d'hashtag");
-                    ht = sc.nextLine();
+                    hashtagName = sc.nextLine();
                     try
                     {
-                        inferace.followHashtag(ht, user.getPseudo());
+                        inferace.followHashtag(hashtagName, user.getPseudo());
                     }catch(RemoteException e)
                     {
                         e.printStackTrace();
                     }
                     break;
                 case 3 :
+                    //lister les hashtags perso
                     try
                     {
                         List<Hashtag> result;
@@ -152,7 +157,19 @@ public class Demo {
                         e.printStackTrace();
                     }
                     break;
-                
+                case 4 : 
+                    //poster un tweet
+                    
+                    String tweet;
+                    //clean console scanner
+                    hashtagName = sc.nextLine();
+                    System.out.println("Donnez un nom d'hashtag");
+                    hashtagName = sc.nextLine();
+                    
+                    System.out.println("Ecrivez votre tweet");
+                    tweet = sc.nextLine();
+                    postTweet(user.getPseudo(),tweet,hashtagName);
+                    break;
                 default:
                     System.out.println("Commande inconnue\n\n");
             }
@@ -180,7 +197,8 @@ public class Demo {
                 + "0 . Exit\n"
                 + "1 . Create a new hashtag (login required)\n"
                 + "2 . follow a hashtag (login required)\n"
-                + "3 . list my hashtag (login required)\n";
+                + "3 . list my hashtag (login required)\n"
+                + "4 . post a tweet (login required)";
         System.out.println(result);
     }
 }
