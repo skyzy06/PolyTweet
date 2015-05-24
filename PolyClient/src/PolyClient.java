@@ -72,6 +72,14 @@ public class PolyClient {
             e.printStackTrace();
         }
 
+        System.out.println("*** Test de follow ***");
+        try {
+            inferace.followHashtag("baude", "Skyzy");
+        } catch (RemoteException e) {
+            System.err.println("Je n'arrive pas à te suive");
+            e.printStackTrace();
+        }
+
         System.out.println("*** Abonnement au(x) hashtag(s) ***");
         MessageConsumer consumer;
         try {
@@ -88,15 +96,7 @@ public class PolyClient {
         for (int i = 0; i < 3; i++) {
             postTweet(user.getPseudo(), "tweet n°" + i, "baude");
         }
-
-        System.out.println("*** Test de follow ***");
-        try {
-            inferace.followHashtag("baude", "Skyzy");
-        } catch (RemoteException e) {
-            System.err.println("Je n'arrive pas à te suive");
-            e.printStackTrace();
-        }
-
+        postTweet(user.getPseudo(), "Un tweet qu'on ne doit pas voir", "mosser");
     }
 
     private void postTweet(String pseudo, String tweetMsg, String hashtag) {

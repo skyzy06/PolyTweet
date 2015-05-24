@@ -66,7 +66,7 @@ public class PolyStub extends UnicastRemoteObject implements PolyInterface {
         if (hashtagAlreadyExist(hastag) && userAlreadyExist(pseudo)) {
             Hashtag tag = findHashtagByName(hastag);
             User user = findUserByPseudo(pseudo);
-            user.getListHashtag().add(tag);
+            user.followNewHashtag(tag);
         }
     }
 
